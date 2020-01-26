@@ -7,7 +7,8 @@ import java.io.Serializable
 
 @Entity(indices = [Index(value=["id_account"], unique = true)])
 data class Account(@PrimaryKey(autoGenerate = true) var id_account:Long? = null,
-                     var nameAccount:String) : Serializable {
+                   var nameAccount:String,
+                   var soldeInit: Double = 100.00) : Serializable {
     override fun equals(other: Any?): Boolean {
         if(this === other) return true
         if(javaClass != other?.javaClass) return false
