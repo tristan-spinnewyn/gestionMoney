@@ -14,6 +14,9 @@ interface PaymentDAO {
     @Query("SELECT count(*) FROM Payment")
     fun countPayment(): Int
 
+    @Query("SELECT * from Payment where id_payment = :id")
+    fun getPaymentById(id: Long): Payment
+
     @Insert
     fun insert(payment:Payment): Long
 

@@ -6,17 +6,26 @@ import java.util.*
 
 @Dao
 interface OperationDAO {
-    @Query("SELECT * FROM Operation WHERE fk_id_account = :accountId")
-    fun getOperations(accountId: Long): List<Operation>
+    @Query("SELECT * FROM Operation WHERE fk_id_account = :accountId and date_op BETWEEN :dateInit and :dateFin order by id_op")
+    fun getOperations(accountId: Long, dateInit: Date, dateFin: Date): List<Operation>
 
-    @Query("SELECT * FROM Operation where fk_id_account = :accountId LIMIT 1 offset :position")
-    fun getOperation(accountId: Long, position: Int): Operation?
+    @Query("SELECT * FROM Operation where fk_id_account = :accountId and date_op BETWEEN :dateInit and :dateFin order by id_op LIMIT 1 offset :position")
+    fun getOperation(accountId: Long, position: Int, dateInit: Date, dateFin: Date): Operation?
 
-    @Query("SELECT count(*) FROM Operation where fk_id_account = :accountId")
-    fun countOperation(accountId: Long): Int
+    @Query("SELECT count(*) FROM Operation where fk_id_account = :accountId and date_op BETWEEN :dateInit and :dateFin order by id_op")
+    fun countOperation(accountId: Long, dateInit: Date, dateFin: Date): Int
 
     @Query("UPDATE Operation SET fk_id_rapprochement = :idRapprochement where date_op BETWEEN :dateInit and :dateFin")
     fun startRapprochement(idRapprochement: Long, dateInit: Date, dateFin: Date)
+
+    @Query("SELECT sum(montant) FROM Operation where fk_id_account = :idAcc group by fk_id_account ")
+    fun getSolde(idAcc : Long): Long
+
+    @Query("SELECT sum(montant) FROM Operation where fk_id_account = :idAcc and date_op BETWEEN :dateInit and :dateFin group by fk_id_account")
+    fun getEnter(idAcc : Long, dateInit: Date, dateFin: Date): Long
+
+    @Query("SELECT sum(montant) FROM Operation where fk_id_account = :idAcc and date_op BETWEEN :dateInit and :dateFin group by fk_id_account")
+    fun getExit(idAcc : Long, dateInit: Date, dateFin: Date): Long
 
     @Insert
     fun insert(operation: Operation): Long

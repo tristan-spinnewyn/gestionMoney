@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dateTierTxt"
+            android:text="29/07 - Auchan"
+            android:textSize="20dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Carte bancaire"
+            android:layout_below="@id/dateTierTxt"
+            android:id="@+id/paymentTxt"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:text="-299,00€"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:id="@+id/montantOpTxt"
+            />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

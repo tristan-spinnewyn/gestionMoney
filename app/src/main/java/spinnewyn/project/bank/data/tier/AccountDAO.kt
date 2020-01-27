@@ -9,7 +9,7 @@ interface AccountDAO {
     fun getAccounts(): List<Account>
 
     @Query("SELECT * FROM Account LIMIT 1 OFFSET :position")
-    fun getAccount(position: Int): Account?
+    fun getAccount(position: Int): Account
 
     @Query("SELECT count(*) FROM Account")
     fun countAccount(): Int

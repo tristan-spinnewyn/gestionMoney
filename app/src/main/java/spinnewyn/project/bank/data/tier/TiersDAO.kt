@@ -11,6 +11,9 @@ interface TiersDAO {
     @Query("SELECT * FROM Tiers limit 1 offset :position")
     fun getTier(position: Int): Tiers
 
+    @Query("SELECT * FROM Tiers where id_tier = :id")
+    fun getTierById(id: Long): Tiers
+
     @Query("SELECT count(*) FROM Tiers")
     fun countTiers(): Int
 

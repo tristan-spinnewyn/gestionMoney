@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Bank</string>
     <string name="action_settings">Settings</string>
+    <string name="debAccueil">Dépense : %s</string>
+    <string name="soldAccueil">Solde : %s</string>
+    <string name="credAccueil">Entré : %s</string>
+    <string name="monthAcc">Mois: %s</string>
 </resources>

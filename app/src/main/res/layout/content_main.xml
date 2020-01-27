@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,16 +7,59 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main"
-    android:background="@color/colorPrimaryDark">
-
-    <TextView
-        android:textColor="@color/colorPrimary"
-        android:layout_width="wrap_content"
+    android:background="@color/colorPrimaryDark"
+    android:orientation="vertical">
+    <TableLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:stretchColumns="*"
+        android:shrinkColumns="*"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        >
+        <TableRow>
+            <TextView
+                android:id="@+id/monthAcc"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/monthAcc"
+                android:layout_span="2"
+                android:layout_gravity="center"
+                />
+            <ImageButton
+                android:src="@android:drawable/ic_menu_my_calendar"
+                android:layout_height="40dp"
+                android:layout_width="40dp"
+                android:layout_gravity="center"
+                android:id="@+id/buttonDateAcc"
+                />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:id="@+id/debAcc"
+                android:text="Débit: "
+                android:textColor="@color/white"
+                android:gravity="center"
+                />
+            <TextView android:id="@+id/soldeAcc"
+                android:text="Solde: "
+                android:textColor="@color/white"
+                android:gravity="center"/>
+            <TextView
+                android:id="@+id/credAcc"
+                android:textColor="@color/white"
+                android:text="Crédit: "
+                android:gravity="center"
+                />
+        </TableRow>
+    </TableLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="100dp"
+        android:id="@+id/lstOp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>
