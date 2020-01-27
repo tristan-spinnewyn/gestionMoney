@@ -15,7 +15,7 @@ interface OperationDAO {
     @Query("SELECT count(*) FROM Operation where fk_id_account = :accountId")
     fun countOperation(accountId: Long): Int
 
-    @Query("UPDATE Operation SET fk_id_rapprochement = :idRapprochement where date_op > :dateInit and date_op < :dateFin")
+    @Query("UPDATE Operation SET fk_id_rapprochement = :idRapprochement where date_op BETWEEN :dateInit and :dateFin")
     fun startRapprochement(idRapprochement: Long, dateInit: Date, dateFin: Date)
 
     @Insert

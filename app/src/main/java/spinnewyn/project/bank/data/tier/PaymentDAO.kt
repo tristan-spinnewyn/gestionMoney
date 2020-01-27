@@ -21,5 +21,5 @@ interface PaymentDAO {
     fun update(payment: Payment)
 
     @Delete
-    fun delete(delete: Delete)
+    fun delete(delete: Payment)
 }

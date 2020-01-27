@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import spinnewyn.project.bank.data.model.*
 import java.text.ParseException
 
 @Database(version= 1,entities = [Tiers::class, Payment::class, Account::class, Rapprochement::class, Operation::class])
+@TypeConverters(DateConverter::class)
 abstract class BankDatabase : RoomDatabase() {
     abstract fun accountDao() : AccountDAO
     abstract fun operationDao() : OperationDAO

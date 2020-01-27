@@ -7,7 +7,7 @@ import java.util.*
 
 @Entity(indices = [Index(value=["id_rapprochement"], unique = true)])
 data class Rapprochement(@PrimaryKey(autoGenerate = true) var id_rapprochement:Long? = null,
-                         var date: Date,
+                         var date_rap: Date,
                          var solde:Double
                          ) {
     override fun equals(other: Any?): Boolean {
@@ -26,6 +26,6 @@ data class Rapprochement(@PrimaryKey(autoGenerate = true) var id_rapprochement:L
     }
 
     override fun toString(): String {
-        return "id rapprochement:$id_rapprochement, date:$date, solde:$solde"
+        return "id rapprochement:$id_rapprochement, date:${date_rap}, solde:$solde"
     }
 }

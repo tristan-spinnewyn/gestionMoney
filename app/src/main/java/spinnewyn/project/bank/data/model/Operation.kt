@@ -6,25 +6,27 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(indices = [Index(value= ["id_op"],unique = true), Index(value=["fk_id_account"]),Index(value = ["fk_id_tier"]), Index(value=["fk_id_payment"])],
-    foreignKeys = [ForeignKey(entity = Account::class,
+@Entity(indices = [Index(value= ["id_op"],unique = true), Index(value=["fk_id_account"]),Index(value = ["fk_id_tier"]), Index(value=["fk_id_payment"]), Index(value=["fk_id_rapprochement"])],
+    foreignKeys = [
+        ForeignKey(entity = Account::class,
         parentColumns = ["id_account"],
         childColumns = ["fk_id_account"],
         onDelete = ForeignKey.CASCADE
         ),
-    ForeignKey(entity = Tiers::class,
-        parentColumns = ["id_tier"],
-        childColumns = ["fk_id_tier"],
-        onDelete = ForeignKey.NO_ACTION
-        ),
-    ForeignKey(entity = Payment::class,
-        parentColumns = ["id_payment"],
-        childColumns = ["fk_id_payment"],
-        onDelete = ForeignKey.NO_ACTION),
-    ForeignKey(entity = Rapprochement::class,
-        parentColumns = ["id_rapprochement"],
-        childColumns = ["fk_id_rapprochement"],
-        onDelete = ForeignKey.NO_ACTION)]
+        ForeignKey(entity = Tiers::class,
+            parentColumns = ["id_tier"],
+            childColumns = ["fk_id_tier"],
+            onDelete = ForeignKey.NO_ACTION
+            ),
+        ForeignKey(entity = Payment::class,
+            parentColumns = ["id_payment"],
+            childColumns = ["fk_id_payment"],
+            onDelete = ForeignKey.NO_ACTION),
+        ForeignKey(entity = Rapprochement::class,
+            parentColumns = ["id_rapprochement"],
+            childColumns = ["fk_id_rapprochement"],
+            onDelete = ForeignKey.NO_ACTION)
+    ]
 )
 data class Operation(@PrimaryKey(autoGenerate = true) var id_op:Long? = null,
                      var date_op:Date,
