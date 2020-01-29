@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import spinnewyn.project.bank.data.model.Account
 import spinnewyn.project.bank.data.model.Tiers
@@ -47,6 +48,10 @@ class OperationAdapter(private val dao: OperationDAO,
         holder.txtDateTier.setText("${date} - ${tier.tier_name}")
         holder.txtPaiement.setText("${payment.name_payment}")
         holder.txtMontant.setText("${operation.montant}€")
+
+        if(operation.statut == 2){
+            holder.operationCell.setCardBackgroundColor(ContextCompat.getColor(context, R.color.green))
+        }
         holder.itemView.setOnClickListener{
             /*
             Date

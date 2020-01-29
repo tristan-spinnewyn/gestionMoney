@@ -36,6 +36,10 @@ interface OperationDAO {
     @Query("SELECT sum(montant) FROM Operation where fk_id_account = :accountId and fk_id_rapprochement= :rappId")
     fun getSoldeRapp(accountId: Long, rappId: Long): Double
 
+    @Query("UPDATE Operation set statut = 2 where fk_id_account = :accountId and fk_id_rapprochement= :rappId")
+    fun updateRappDef(accountId: Long, rappId: Long)
+
+
     @Insert
     fun insert(operation: Operation): Long
 

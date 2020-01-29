@@ -248,7 +248,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val db = BankDatabase.getDatabase(this)
-        db.seed()
         return when (item.itemId) {
             R.id.action_settings -> {
                 //todo account
@@ -292,6 +291,7 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent(this,RapprochementActivity::class.java)
                     val defRapp = db.rapprochementDao().getRappById(lastId)
                     intent.putExtra("rapprochement",defRapp)
+                    this.finish()
                     this.startActivity(intent)
                 }
 
@@ -299,5 +299,19 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onResume() {
+        val db = BankDatabase.getDatabase(this)
+        val account = db.accountDao().getAccount(0)
+        updateDateInView(account)
+        super.onResume()
+    }
+
+    override fun onRestart() {
+        val db = BankDatabase.getDatabase(this)
+        val account = db.accountDao().getAccount(0)
+        updateDateInView(account)
+        super.onRestart()
     }
 }

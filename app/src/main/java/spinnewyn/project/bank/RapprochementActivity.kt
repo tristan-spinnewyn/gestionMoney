@@ -30,21 +30,21 @@ class RapprochementActivity : AppCompatActivity() {
         soldeAcc.setText(txtSoldeAtt)
         updateRapp()
 
-        val oldRapp = db.rapprochementDao().getRappById((rapp.id_rapprochement?.minus(1)) as Long)
-        var oldMontant = oldRapp.soldeFinal
-        val soldeActuel = db.operationDao().getSoldeRapp(account.id_account as Long,rapp.id_rapprochement as Long) + oldMontant!!
-
 
         valRapp.setOnClickListener{
+            val oldRapp = db.rapprochementDao().getRappById((rapp.id_rapprochement?.minus(1)) as Long)
+            var oldMontant = oldRapp.soldeFinal
+            val soldeActuel = db.operationDao().getSoldeRapp(account.id_account as Long,rapp.id_rapprochement as Long) + oldMontant!!
             if(soldeActuel != soldeAtt){
                 val dlg = AlertDialog.Builder(this)
-                    .setTitle(R.string.alertSolde)
+                    .setTitle("$soldeActuel $soldeAtt")
                     .setPositiveButton(R.string.add) { dialog, which -> dialog.dismiss()
                     }
                     .show()
             }else{
                 rapp.soldeFinal = soldeAtt
                 db.rapprochementDao().update(rapp)
+                db.operationDao().updateRappDef(account.id_account!!,rapp.id_rapprochement!!)
                 this.finish()
             }
         }

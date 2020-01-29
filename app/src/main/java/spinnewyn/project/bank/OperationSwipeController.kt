@@ -29,6 +29,23 @@ class OperationSwipeController(private val account: spinnewyn.project.bank.data.
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val operation = dao.getOperation(account.id_account!!,viewHolder.adapterPosition,dateDebut,dateFin) ?: return
+        if(operation.statut == 2){
+            val dlg = AlertDialog.Builder(context)
+                .setMessage("Vous ne pouvez pas supprimer cette opération !")
+                .setPositiveButton(
+                    R.string.add,
+                    DialogInterface.OnClickListener{
+                            dialog, id ->
+                        (context as MainActivity).updateDateInView(account)
+                        dialog.dismiss()
+                    }
+                )
+                .setOnCancelListener(
+                    DialogInterface.OnCancelListener { dialog -> operationAdapter.notifyDataSetChanged() }
+                )
+            dlg.create().show()
+            return
+        }
         val dlg = AlertDialog.Builder(context)
         dlg.setMessage("Etes vous sur de vouloir supprimer l'opération ?")
             .setPositiveButton(
