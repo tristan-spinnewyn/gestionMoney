@@ -39,6 +39,9 @@ class OperationAdapter(private val dao: OperationDAO,
         holder.txtDateTier.setText("${date} - ${tier.tier_name}")
         holder.txtPaiement.setText("${payment.name_payment}")
         holder.txtMontant.setText("${operation.montant}€")
+        holder.itemView.setOnClickListener{
+
+        }
 
     }
     private fun convertDate(date : Date): String{

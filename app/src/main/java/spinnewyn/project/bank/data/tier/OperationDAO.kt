@@ -19,13 +19,13 @@ interface OperationDAO {
     fun startRapprochement(idRapprochement: Long, dateInit: Date, dateFin: Date)
 
     @Query("SELECT sum(montant) FROM Operation where fk_id_account = :idAcc group by fk_id_account ")
-    fun getSolde(idAcc : Long): Long
+    fun getSolde(idAcc : Long): Double
 
     @Query("SELECT sum(montant) FROM Operation where montant > 0 and fk_id_account = :idAcc and date_op BETWEEN :dateInit and :dateFin group by fk_id_account")
-    fun getEnter(idAcc : Long, dateInit: Date, dateFin: Date): Long
+    fun getEnter(idAcc : Long, dateInit: Date, dateFin: Date): Double
 
     @Query("SELECT sum(montant) FROM Operation where montant < 0 and fk_id_account = :idAcc and date_op BETWEEN :dateInit and :dateFin group by fk_id_account")
-    fun getExit(idAcc : Long, dateInit: Date, dateFin: Date): Long
+    fun getExit(idAcc : Long, dateInit: Date, dateFin: Date): Double
 
     @Insert
     fun insert(operation: Operation): Long
