@@ -8,6 +8,8 @@ import spinnewyn.project.bank.data.model.Account
 import spinnewyn.project.bank.data.tier.OperationDAO
 import spinnewyn.project.bank.data.tier.PaymentDAO
 import spinnewyn.project.bank.data.tier.TiersDAO
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 class OperationAdapter(private val dao: OperationDAO,
@@ -33,8 +35,15 @@ class OperationAdapter(private val dao: OperationDAO,
         val operation = dao.getOperation(account.id_account as Long,position,dateDebut,dateFin)
         val tier = daoTier.getTierById(operation?.fk_id_tier as Long)
         val payment = daoPayment.getPaymentById(operation?.fk_id_payment as Long)
-        holder.txtDateTier.setText("${operation?.date_op} - ${tier.tier_name}")
+        val date = convertDate(operation?.date_op)
+        holder.txtDateTier.setText("${date} - ${tier.tier_name}")
         holder.txtPaiement.setText("${payment.name_payment}")
         holder.txtMontant.setText("${operation.montant}€")
+
+    }
+    private fun convertDate(date : Date): String{
+        val formatter: DateFormat = SimpleDateFormat("dd/MM/yyyy")
+        val today: String = formatter.format(date)
+        return today
     }
 }

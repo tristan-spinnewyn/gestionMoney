@@ -1,28 +1,35 @@
 package spinnewyn.project.bank
 
 import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
+import android.app.Dialog
 import android.os.Bundle
-import android.preference.PreferenceManager
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
+import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.DatePicker
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import spinnewyn.project.bank.data.model.Account
+import spinnewyn.project.bank.data.model.Operation
+import spinnewyn.project.bank.data.model.Tiers
 import spinnewyn.project.bank.data.tier.BankDatabase
+import java.text.SimpleDateFormat
 import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
     val cal = Calendar.getInstance()
+    val arrayTouchHelper = arrayOfNulls<ItemTouchHelper>(1)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        lstOp.layoutManager = LinearLayoutManager(this)
         val db = BankDatabase.getDatabase(this)
         db.seed()
         val account = db.accountDao().getAccount(0)
@@ -46,22 +53,101 @@ class MainActivity : AppCompatActivity() {
             }
         })
         updateDateInView(account)
+        updateSolde()
         //solde
         setTitle(account.nameAccount)
         setSupportActionBar(toolbar)
-        val montantSolde = db.operationDao().getSolde(1)+(db.accountDao().getAccount(0)?.soldeInit ?: 0.0)
-        val solde = String.format(resources.getString(R.string.soldAccueil), montantSolde)
-        soldeAcc.setText(solde)
-        if(montantSolde > 0){
-            soldeAcc.setTextColor(resources.getColor(R.color.green,null))
-        }else{
-            soldeAcc.setTextColor(resources.getColor(R.color.red,null))
-        }
 
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+
+        fab.setOnClickListener {
+            val dialog = Dialog(this@MainActivity)
+            dialog.setContentView(R.layout.add_operation)
+            //spinner
+            val spinner = (dialog.findViewById<View>(R.id.lstPayment) as Spinner)
+            val payments = db.paymentDao().getPayments()
+            val item = arrayOfNulls<String>(payments.size)
+            for(i in payments.indices){
+                item[i] = payments[i].name_payment
+            }
+            val arrayAdapter = ArrayAdapter(this@MainActivity,android.R.layout.simple_spinner_item, item)
+            spinner.adapter = arrayAdapter
+            //autocomplete tier
+            val autoComplete = (dialog.findViewById<View>(R.id.edtTiers) as AutoCompleteTextView)
+            val tiers = db.tierDAO().getTiers()
+            val itemTiers = arrayOfNulls<String>(tiers.size)
+            for(i in tiers.indices){
+                itemTiers[i] = tiers[i].tier_name
+            }
+            val arrayAdapterTier = ArrayAdapter(this@MainActivity,android.R.layout.simple_dropdown_item_1line,itemTiers)
+            autoComplete.setAdapter(arrayAdapterTier)
+            autoComplete.threshold = 1
+            //date
+            val editText = (dialog.findViewById<View>(R.id.enterDate) as EditText)
+            editText.setInputType(InputType.TYPE_NULL)
+            editText.setOnClickListener{
+                val cldr = Calendar.getInstance()
+                val day = cldr[Calendar.DAY_OF_MONTH]
+                val month = cldr[Calendar.MONTH]
+                val year = cldr[Calendar.YEAR]
+                // date picker dialog
+                val picker = DatePickerDialog(
+                    this@MainActivity,
+                    OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                        editText.setText(
+                            dayOfMonth.toString() + "/" + (monthOfYear + 1) + "/" + year
+                        )
+                    }, year, month, day
+                )
+                picker.show()
+            }
+
+            (dialog.findViewById<View>(R.id.btnCancel) as Button)
+                .setOnClickListener { dialog.dismiss() }
+            (dialog.findViewById<View>(R.id.btnOk) as Button)
+                .setOnClickListener{
+                    val typeMouv =((dialog.findViewById<View>(R.id.radMouv) as RadioGroup).checkedRadioButtonId
+                            == R.id.radSortit)
+                    val payment = spinner.selectedItem.toString()
+                    val tier = autoComplete.text.toString()
+                    val date = ((dialog.findViewById<View>(R.id.enterDate)) as EditText).text.toString()
+                    val montant = ((dialog.findViewById<View>(R.id.newMontant)) as EditText).text.toString()
+
+                    if(date.trim().isEmpty() || tier.trim().isEmpty() || montant.trim().isEmpty() ){
+                        Toast.makeText(this,
+                            "Veuillez remplir tout les champs",
+                            Toast.LENGTH_LONG).show()
+                        return@setOnClickListener
+                    }
+                    var defMontant = 0.0
+                    if(typeMouv) {
+                        defMontant -= montant.toDouble()
+                    }else{
+                        defMontant += montant.toDouble()
+                    }
+                    val idPayment = db.paymentDao().getPaymentByName(payment)?.id_payment
+                    var newTier = db.tierDAO().getTierByName(tier)?.id_tier
+                    if(newTier == null){
+                        newTier = db.tierDAO().insert(
+                            Tiers(
+                                tier_name = tier
+                            )
+                        )
+                    }
+                    val dateNew = SimpleDateFormat("dd/M/yyyy").parse(date)
+                    db.operationDao().insert(Operation(
+                        montant = defMontant,
+                        date_op = dateNew,
+                        fk_id_payment = idPayment,
+                        fk_id_tier = newTier,
+                        fk_id_account = account.id_account!!
+                    ))
+                    updateDateInView(account)
+                    updateSolde()
+                    dialog.dismiss()
+                }
+
+            dialog.show()
         }
 
 
@@ -104,21 +190,49 @@ class MainActivity : AppCompatActivity() {
         set(Calendar.DAY_OF_MONTH, getActualMinimum(Calendar.DAY_OF_MONTH))
         return this
     }
+    fun getDebut(time: Date?): Date{
+        val cal = Calendar.getInstance()
+        cal.setTime(time)
+        cal.add(Calendar.MONTH,-1)
 
-    private fun updateDateInView(account: Account){
+        return cal.time
+    }
+
+    fun getFin(time: Date): Date{
+        val cal = Calendar.getInstance()
+        cal.setTime(time)
+        cal.add(Calendar.MONTH,1)
+
+        return cal.time
+    }
+
+    public fun updateSolde(){
+        val db = BankDatabase.getDatabase(this)
+        val montantSolde = db.operationDao().getSolde(1)+(db.accountDao().getAccount(0)?.soldeInit ?: 0.0)
+        val solde = String.format(resources.getString(R.string.soldAccueil), montantSolde)
+        soldeAcc.setText(solde)
+        if(montantSolde > 0){
+            soldeAcc.setTextColor(resources.getColor(R.color.green,null))
+        }else{
+            soldeAcc.setTextColor(resources.getColor(R.color.red,null))
+        }
+    }
+
+    public fun updateDateInView(account: Account){
+        if(arrayTouchHelper[0] != null){
+            arrayTouchHelper[0]?.attachToRecyclerView(null)
+        }
         val db = BankDatabase.getDatabase(this)
         val currentMonth = cal.getDisplayName(Calendar.MONTH,Calendar.LONG,Locale.getDefault())
         monthAcc.setText(currentMonth)
-        val initDate = cal.getTime().toFirstOfMonth()
-        val lastDate = initDate.toEndOfMonth()
+        val initDate = getDebut(cal.getTime()).toEndOfMonth()
+        val lastDate = cal.getTime().toEndOfMonth()
         val entre = db.operationDao().getEnter(1,initDate,lastDate)
         val txtEntre = String.format(resources.getString(R.string.credAccueil),entre)
-        val sortit = db.operationDao().getEnter(1,initDate,lastDate)
+        val sortit = db.operationDao().getExit(1,initDate,lastDate)
         val txtSortit = String.format(resources.getString(R.string.debAccueil),sortit)
         credAcc.setText(txtEntre)
         debAcc.setText(txtSortit)
-
-        lstOp.layoutManager = LinearLayoutManager(this)
         lstOp.adapter = OperationAdapter(db.operationDao(),
             db.paymentDao(),
             db.tierDAO(),
@@ -126,5 +240,17 @@ class MainActivity : AppCompatActivity() {
             account,
             initDate,
             lastDate)
+        val operationSwipeController =
+            OperationSwipeController(
+                account,
+                initDate,
+                lastDate,
+                lstOp.adapter as OperationAdapter,
+                db.operationDao(),
+                this
+            )
+        val itemTouchHelper= ItemTouchHelper(operationSwipeController)
+        itemTouchHelper.attachToRecyclerView(lstOp)
+        arrayTouchHelper[0] = itemTouchHelper
     }
 }

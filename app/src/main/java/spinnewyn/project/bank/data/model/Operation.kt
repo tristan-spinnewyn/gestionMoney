@@ -30,7 +30,7 @@ import java.util.*
 )
 data class Operation(@PrimaryKey(autoGenerate = true) var id_op:Long? = null,
                      var date_op:Date,
-                     var montant:Long,
+                     var montant:Double,
                      var fk_id_tier:Long? = null,
                      var fk_id_account:Long,
                      var fk_id_payment:Long? = null,

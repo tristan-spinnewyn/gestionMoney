@@ -29,6 +29,7 @@
             android:text="-299,00€"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
+            android:layout_below="@id/dateTierTxt"
             android:id="@+id/montantOpTxt"
             />
 

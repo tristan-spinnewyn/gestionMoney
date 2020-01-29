@@ -14,6 +14,9 @@ interface TiersDAO {
     @Query("SELECT * FROM Tiers where id_tier = :id")
     fun getTierById(id: Long): Tiers
 
+    @Query("SELECT * FROM Tiers where tier_name = :name")
+    fun getTierByName(name:String): Tiers?
+
     @Query("SELECT count(*) FROM Tiers")
     fun countTiers(): Int
 

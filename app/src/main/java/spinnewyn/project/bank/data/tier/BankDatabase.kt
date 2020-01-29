@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import spinnewyn.project.bank.data.model.*
 import java.text.ParseException
+import java.util.*
 
 @Database(version= 1,entities = [Tiers::class, Payment::class, Account::class, Rapprochement::class, Operation::class])
 @TypeConverters(DateConverter::class)
@@ -45,6 +46,18 @@ abstract class BankDatabase : RoomDatabase() {
                 val idPay3 = paymentDao().insert(pay3)
                 val idPay4 = paymentDao().insert(pay4)
                 val idPay5 = paymentDao().insert(pay5)
+                val tier = Tiers(
+                    tier_name = "Auchan"
+                )
+                val idTier = tierDAO().insert(tier)
+                val operation = Operation(
+                    montant = -200.20,
+                    date_op = Calendar.getInstance().time,
+                    fk_id_account = 1,
+                    fk_id_tier = idTier,
+                    fk_id_payment = idPay3
+                )
+                operationDao().insert(operation)
             }catch (pe: ParseException){
 
             }

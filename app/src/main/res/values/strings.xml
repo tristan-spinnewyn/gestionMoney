@@ -3,6 +3,15 @@
     <string name="action_settings">Settings</string>
     <string name="debAccueil">Dépense : %s</string>
     <string name="soldAccueil">Solde : %s</string>
-    <string name="credAccueil">Entré : %s</string>
+    <string name="credAccueil">Entrée : %s</string>
     <string name="monthAcc">Mois: %s</string>
+    <string name="newTierLbl">Tiers: </string>
+    <string name="newPaymentLbl">Moyen de paiement: </string>
+    <string name="newDateOp">Date: </string>
+    <string name="newMontant">Montant: </string>
+    <string name="cancel">Annuler</string>
+    <string name="add">Ok!</string>
+    <string name="typeMouv">Mouvement: </string>
+    <string name="entre">Entrée</string>
+    <string name="sortit">Sortit</string>
 </resources>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:columnCount="2"
+    android:id="@+id/layoutAdd"
+    android:padding="5dp">
+    <TextView
+        android:text="@string/newTierLbl"
+        android:layout_gravity="fill_horizontal"
+        />
+    <AutoCompleteTextView
+        android:id="@+id/edtTiers"
+        android:layout_gravity="fill_horizontal"
+        />
+    <TextView android:text="@string/typeMouv" android:layout_gravity="fill_horizontal"/>
+    <RadioGroup android:id="@+id/radMouv">
+        <RadioButton android:id="@+id/radSortit"
+            android:text="@string/sortit"
+            android:checked="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <RadioButton android:id="@+id/radEntre"
+            android:text="@string/entre"
+            android:checked="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RadioGroup>
+    <TextView
+        android:text="@string/newPaymentLbl"
+        android:layout_gravity="fill_horizontal"/>
+    <Spinner
+        android:id="@+id/lstPayment"
+        android:layout_gravity="fill_horizontal"
+        />
+
+    <TextView
+        android:text="@string/newDateOp"/>
+
+    <EditText
+        android:id="@+id/enterDate"
+        android:hint="Enter Date" />
+
+    <TextView
+        android:text="@string/newMontant"
+        android:layout_gravity="fill_horizontal"
+        />
+    <EditText
+        android:inputType="numberDecimal"
+        android:id="@+id/newMontant"
+        android:layout_gravity="fill_horizontal"
+        />
+
+    <Button android:id="@+id/btnCancel"
+        android:text="@string/cancel"/>
+    <Button android:id="@+id/btnOk"
+        android:text="@string/add"/>
+</GridLayout>
