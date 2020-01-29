@@ -15,4 +15,11 @@
     <string name="entre">Entrée</string>
     <string name="sortit">Sortit</string>
     <string name="rapp">Rapprochement</string>
+    <string name="lblRapp">Solde à atteindre: </string>
+    <string name="tierMenu">Tiers</string>
+    <string name="paymentMenu">Paiement</string>
+    <string name="histoRapp">Historique des rapprochements</string>
+    <string name="actSolde">Solde: %s</string>
+    <string name="soldeAtt">A atteindre: %s</string>
+    <string name="title_activity_rapprochement">Rapprochement</string>
 </resources>

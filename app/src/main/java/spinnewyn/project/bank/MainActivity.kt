@@ -3,6 +3,7 @@ package spinnewyn.project.bank
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.view.Menu
@@ -16,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import spinnewyn.project.bank.data.model.Account
 import spinnewyn.project.bank.data.model.Operation
+import spinnewyn.project.bank.data.model.Rapprochement
 import spinnewyn.project.bank.data.model.Tiers
 import spinnewyn.project.bank.data.tier.BankDatabase
 import java.text.SimpleDateFormat
@@ -153,22 +155,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
     fun Date.toEndOfMonth(): Date {
         return Calendar.getInstance().apply {
             time = this@toEndOfMonth
@@ -252,5 +238,66 @@ class MainActivity : AppCompatActivity() {
         val itemTouchHelper= ItemTouchHelper(operationSwipeController)
         itemTouchHelper.attachToRecyclerView(lstOp)
         arrayTouchHelper[0] = itemTouchHelper
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val db = BankDatabase.getDatabase(this)
+        db.seed()
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                //todo account
+                true
+            }
+            R.id.rapprochement ->{
+                //todo rapprochement
+                var lastId = db.rapprochementDao().getMaxID()
+                val lastRapp = db.rapprochementDao().getRappById(lastId)
+                if(lastRapp.soldeFinal != null){
+                    //todo create new rapprochement
+                    val dlg = Dialog(this@MainActivity)
+                    dlg.setContentView(R.layout.add_rapprochement)
+                    (dlg.findViewById<View>(R.id.btnCancel) as Button)
+                        .setOnClickListener { dlg.dismiss() }
+                    (dlg.findViewById<View>(R.id.btnOk) as Button)
+                        .setOnClickListener{
+                            val solde = (dlg.findViewById<View>(R.id.soldeInit) as EditText).text.toString()
+                            if(solde.trim().isEmpty()){
+                                Toast.makeText(this,
+                                    "Veuillez saisir le solde du relevé",
+                                    Toast.LENGTH_LONG).show()
+                                return@setOnClickListener
+                            }else{
+                                lastId = db.rapprochementDao().insert(
+                                    spinnewyn.project.bank.data.model.Rapprochement(
+                                        date_rap = Calendar.getInstance().time,
+                                        solde = (dlg.findViewById<View>(R.id.soldeInit) as EditText).text.toString().toDouble()
+                                    )
+                                )
+                                val intent = Intent(this,RapprochementActivity::class.java)
+                                val defRapp = db.rapprochementDao().getRappById(lastId)
+                                dlg.dismiss()
+                                intent.putExtra("rapprochement",defRapp)
+                                this.startActivity(intent)
+
+                            }
+                        }
+                    dlg.show()
+                }else{
+                    val intent = Intent(this,RapprochementActivity::class.java)
+                    val defRapp = db.rapprochementDao().getRappById(lastId)
+                    intent.putExtra("rapprochement",defRapp)
+                    this.startActivity(intent)
+                }
+
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

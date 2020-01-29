@@ -22,7 +22,8 @@ abstract class BankDatabase : RoomDatabase() {
         if(accountDao().countAccount() == 0){
             try {
                 val account = Account(
-                    nameAccount = "Mon compte"
+                    nameAccount = "Mon compte",
+                    soldeInit = 300.0
                 )
                 val idAcc = accountDao().insert(account)
 
@@ -46,18 +47,11 @@ abstract class BankDatabase : RoomDatabase() {
                 val idPay3 = paymentDao().insert(pay3)
                 val idPay4 = paymentDao().insert(pay4)
                 val idPay5 = paymentDao().insert(pay5)
-                val tier = Tiers(
-                    tier_name = "Auchan"
-                )
-                val idTier = tierDAO().insert(tier)
-                val operation = Operation(
-                    montant = -200.20,
-                    date_op = Calendar.getInstance().time,
-                    fk_id_account = 1,
-                    fk_id_tier = idTier,
-                    fk_id_payment = idPay3
-                )
-                operationDao().insert(operation)
+                rapprochementDao().insert(Rapprochement(
+                    date_rap = Calendar.getInstance().time,
+                    solde = 300.0,
+                    soldeFinal = 300.0
+                ))
             }catch (pe: ParseException){
 
             }

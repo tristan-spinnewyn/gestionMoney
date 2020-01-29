@@ -3,13 +3,15 @@ package spinnewyn.project.bank.data.model
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import java.io.Serializable
 import java.util.*
 
 @Entity(indices = [Index(value=["id_rapprochement"], unique = true)])
 data class Rapprochement(@PrimaryKey(autoGenerate = true) var id_rapprochement:Long? = null,
                          var date_rap: Date,
-                         var solde:Double
-                         ) {
+                         var solde:Double,
+                         var soldeFinal:Double? = null
+                         ): Serializable {
     override fun equals(other: Any?): Boolean {
         if(this===other) return true
         if(javaClass != other?.javaClass) return false

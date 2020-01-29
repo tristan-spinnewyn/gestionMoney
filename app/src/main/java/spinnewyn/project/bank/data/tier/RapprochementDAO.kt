@@ -14,6 +14,12 @@ interface RapprochementDAO {
     @Query("SELECT count(*) FROM Rapprochement")
     fun countRapprochement(): Int
 
+    @Query("SELECT Max(id_rapprochement) from Rapprochement")
+    fun getMaxID(): Long
+
+    @Query("SELECT * FROM Rapprochement where id_rapprochement = :id")
+    fun getRappById(id: Long): Rapprochement
+
     @Insert
     fun insert(rapprochement: Rapprochement): Long
 
