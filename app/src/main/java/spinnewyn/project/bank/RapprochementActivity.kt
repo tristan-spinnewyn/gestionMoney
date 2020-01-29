@@ -1,6 +1,9 @@
 package spinnewyn.project.bank
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +29,25 @@ class RapprochementActivity : AppCompatActivity() {
         val txtSoldeAtt = String.format(resources.getString(R.string.soldeAtt),soldeAtt)
         soldeAcc.setText(txtSoldeAtt)
         updateRapp()
+
+        val oldRapp = db.rapprochementDao().getRappById((rapp.id_rapprochement?.minus(1)) as Long)
+        var oldMontant = oldRapp.soldeFinal
+        val soldeActuel = db.operationDao().getSoldeRapp(account.id_account as Long,rapp.id_rapprochement as Long) + oldMontant!!
+
+
+        valRapp.setOnClickListener{
+            if(soldeActuel != soldeAtt){
+                val dlg = AlertDialog.Builder(this)
+                    .setTitle(R.string.alertSolde)
+                    .setPositiveButton(R.string.add) { dialog, which -> dialog.dismiss()
+                    }
+                    .show()
+            }else{
+                rapp.soldeFinal = soldeAtt
+                db.rapprochementDao().update(rapp)
+                this.finish()
+            }
+        }
     }
 
     fun updateRapp(){
