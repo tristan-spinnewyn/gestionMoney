@@ -12,7 +12,7 @@ class RapprochementListe : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rapprochement_liste)
         val db = BankDatabase.getDatabase(this)
-
+        setTitle("Liste des rapprochements")
         lstRapp.layoutManager = LinearLayoutManager(this)
         lstRapp.adapter = RapprochementAdapter(db.rapprochementDao(),this)
 
