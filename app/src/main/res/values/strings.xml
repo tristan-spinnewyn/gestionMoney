@@ -23,4 +23,5 @@
     <string name="soldeAtt">A atteindre: %s</string>
     <string name="title_activity_rapprochement">Rapprochement</string>
     <string name="alertSolde">Les soldes doivent correspondre.</string>
+    <string name="title_activity_tiers">TiersActivity</string>
 </resources>
