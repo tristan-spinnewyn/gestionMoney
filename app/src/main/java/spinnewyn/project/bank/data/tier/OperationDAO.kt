@@ -39,6 +39,8 @@ interface OperationDAO {
     @Query("UPDATE Operation set statut = 2 where fk_id_account = :accountId and fk_id_rapprochement= :rappId")
     fun updateRappDef(accountId: Long, rappId: Long)
 
+    @Query("SELECT count(*) FROM Operation where fk_id_tier = :idTier")
+    fun getNbOpInTier(idTier: Long): Int
 
     @Insert
     fun insert(operation: Operation): Long

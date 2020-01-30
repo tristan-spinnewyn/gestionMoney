@@ -254,6 +254,11 @@ class MainActivity : AppCompatActivity() {
                 this.startActivity(intent)
                 true
             }
+            R.id.tier -> {
+                val intent = Intent(this,TiersActivity::class.java)
+                this.startActivity(intent)
+                true
+            }
             R.id.rapprochement ->{
                 //todo rapprochement
                 var lastId = db.rapprochementDao().getMaxID()

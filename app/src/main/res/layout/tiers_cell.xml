@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="5dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lblTierTxt"
+            android:text="Ceci est mon composant"
+            android:textSize="20dp"
+            />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_edit"
+            android:layout_below="@id/lblTierTxt"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/editTierBtn"
+            />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_delete"
+            android:layout_below="@id/lblTierTxt"
+            android:layout_toLeftOf="@id/editTierBtn"
+            android:id="@+id/deleteTierBtn"
+            />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

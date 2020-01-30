@@ -8,4 +8,12 @@
     tools:context=".TiersActivity"
     tools:showIn="@layout/activity_tiers">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="85dp"
+        android:id="@+id/lstTier">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
