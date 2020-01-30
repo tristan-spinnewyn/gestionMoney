@@ -291,7 +291,6 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent(this,RapprochementActivity::class.java)
                     val defRapp = db.rapprochementDao().getRappById(lastId)
                     intent.putExtra("rapprochement",defRapp)
-                    this.finish()
                     this.startActivity(intent)
                 }
 

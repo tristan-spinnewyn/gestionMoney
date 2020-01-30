@@ -37,7 +37,7 @@ class RapprochementActivity : AppCompatActivity() {
             val soldeActuel = db.operationDao().getSoldeRapp(account.id_account as Long,rapp.id_rapprochement as Long) + oldMontant!!
             if(soldeActuel != soldeAtt){
                 val dlg = AlertDialog.Builder(this)
-                    .setTitle("$soldeActuel $soldeAtt")
+                    .setTitle("Le solde doit etre égale avec le solde à atteindre")
                     .setPositiveButton(R.string.add) { dialog, which -> dialog.dismiss()
                     }
                     .show()

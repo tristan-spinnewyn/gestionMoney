@@ -31,7 +31,7 @@ class OperationSwipeController(private val account: spinnewyn.project.bank.data.
         val operation = dao.getOperation(account.id_account!!,viewHolder.adapterPosition,dateDebut,dateFin) ?: return
         if(operation.statut == 2){
             val dlg = AlertDialog.Builder(context)
-                .setMessage("Vous ne pouvez pas supprimer cette opération !")
+                .setMessage("Vous ne pouvez pas supprimer une opération rapprochée !")
                 .setPositiveButton(
                     R.string.add,
                     DialogInterface.OnClickListener{
