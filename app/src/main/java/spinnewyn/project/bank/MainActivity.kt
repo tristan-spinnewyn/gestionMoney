@@ -249,8 +249,9 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val db = BankDatabase.getDatabase(this)
         return when (item.itemId) {
-            R.id.action_settings -> {
-                //todo account
+            R.id.histoRapp -> {
+                val intent = Intent(this,RapprochementListe::class.java)
+                this.startActivity(intent)
                 true
             }
             R.id.rapprochement ->{

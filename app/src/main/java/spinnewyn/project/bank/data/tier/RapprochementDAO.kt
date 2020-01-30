@@ -8,7 +8,7 @@ interface RapprochementDAO {
     @Query("SELECT * FROM Rapprochement")
     fun getRapprochements(): List<Rapprochement>
 
-    @Query("SELECT * FROM Rapprochement LIMIT 1 offset :position")
+    @Query("SELECT * FROM Rapprochement order by date_rap DESC LIMIT 1 offset :position")
     fun getRapprochement(position: Int): Rapprochement
 
     @Query("SELECT count(*) FROM Rapprochement")

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content" android:layout_marginBottom="5dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dateRappTxt"
+            android:text="Rapprochement du 29/01/2020"
+            android:textSize="20dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Terminé"
+            android:layout_below="@id/dateRappTxt"
+            android:id="@+id/statutRapp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:text="1346.87€"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/dateRappTxt"
+            android:id="@+id/montantFinRapp"
+            />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
