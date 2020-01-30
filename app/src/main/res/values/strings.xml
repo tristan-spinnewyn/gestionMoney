@@ -19,7 +19,7 @@
     <string name="tierMenu">Tiers</string>
     <string name="paymentMenu">Paiement</string>
     <string name="histoRapp">Historique des rapprochements</string>
-    <string name="actSolde">Solde: %s</string>
+    <string name="actSolde">Reste : %s</string>
     <string name="soldeAtt">A atteindre: %s</string>
     <string name="title_activity_rapprochement">Rapprochement</string>
     <string name="alertSolde">Les soldes doivent correspondre.</string>

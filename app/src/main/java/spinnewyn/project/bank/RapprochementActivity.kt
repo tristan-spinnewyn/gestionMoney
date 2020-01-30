@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_rapprochement.*
 import kotlinx.android.synthetic.main.content_rapprochement.*
 import spinnewyn.project.bank.data.model.Rapprochement
 import spinnewyn.project.bank.data.tier.BankDatabase
+import java.lang.Math.round
 
 class RapprochementActivity : AppCompatActivity() {
 
@@ -25,7 +26,8 @@ class RapprochementActivity : AppCompatActivity() {
         val account = db.accountDao().getAccount(0)
         val rapp = intent.getSerializableExtra("rapprochement") as Rapprochement
 
-        val soldeAtt = rapp.solde
+        var soldeAtt = rapp.solde
+        soldeAtt = (round(soldeAtt * 10.0)/10).toDouble()
         val txtSoldeAtt = String.format(resources.getString(R.string.soldeAtt),soldeAtt)
         soldeAcc.setText(txtSoldeAtt)
         updateRapp()
@@ -56,7 +58,8 @@ class RapprochementActivity : AppCompatActivity() {
         val rapp = intent.getSerializableExtra("rapprochement") as Rapprochement
         val oldRapp = db.rapprochementDao().getRappById((rapp.id_rapprochement?.minus(1)) as Long)
         var oldMontant = oldRapp.soldeFinal
-        val soldeActuel = db.operationDao().getSoldeRapp(account.id_account as Long,rapp.id_rapprochement as Long) + oldMontant!!
+        var soldeActuel = db.operationDao().getSoldeRapp(account.id_account as Long,rapp.id_rapprochement as Long) + oldMontant!! - rapp.solde
+        soldeActuel = (round(soldeActuel * 10.0)/10).toDouble()
         val txtSoldeActuel = String.format(resources.getString(R.string.actSolde),soldeActuel)
         debAcc.setText(txtSoldeActuel)
         lstOpRapp.adapter = OperationRapprochementAdapter(db.operationDao(),

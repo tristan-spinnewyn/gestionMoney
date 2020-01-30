@@ -194,7 +194,8 @@ class MainActivity : AppCompatActivity() {
 
     public fun updateSolde(){
         val db = BankDatabase.getDatabase(this)
-        val montantSolde = db.operationDao().getSolde(1)+(db.accountDao().getAccount(0)?.soldeInit ?: 0.0)
+        var montantSolde = db.operationDao().getSolde(1)+(db.accountDao().getAccount(0)?.soldeInit ?: 0.0)
+        montantSolde = (Math.round(montantSolde * 10.0) /10).toDouble()
         val solde = String.format(resources.getString(R.string.soldAccueil), montantSolde)
         soldeAcc.setText(solde)
         if(montantSolde > 0){
@@ -213,9 +214,11 @@ class MainActivity : AppCompatActivity() {
         monthAcc.setText(currentMonth)
         val initDate = getDebut(cal.getTime()).toEndOfMonth()
         val lastDate = cal.getTime().toEndOfMonth()
-        val entre = db.operationDao().getEnter(1,initDate,lastDate)
+        var entre = db.operationDao().getEnter(1,initDate,lastDate)
+        entre = (Math.round(entre * 10.0) /10).toDouble()
         val txtEntre = String.format(resources.getString(R.string.credAccueil),entre)
-        val sortit = db.operationDao().getExit(1,initDate,lastDate)
+        var sortit = db.operationDao().getExit(1,initDate,lastDate)
+        sortit = (Math.round(sortit * 10.0) /10).toDouble()
         val txtSortit = String.format(resources.getString(R.string.debAccueil),sortit)
         credAcc.setText(txtEntre)
         debAcc.setText(txtSortit)
